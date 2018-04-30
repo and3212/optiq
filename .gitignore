@@ -1,0 +1,14 @@
+# JetBrains config folder
+src/cpp/.idea
+
+# CMake builds from CLion
+src/cpp/cmake-build-debug/
+src/cpp/cmake-build-release/
+src/cpp/build
+
+# AVR-C platformio files
+src/avrC/.pioenvs
+src/avrC/.piolibdeps
+src/avrC/.clang_complete
+src/avrC/.gcc-flags.json
+src/avrC/.travis.yml
