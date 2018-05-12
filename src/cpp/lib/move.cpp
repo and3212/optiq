@@ -7,13 +7,16 @@
 #include <cmath>
 #include <iostream>
 
+#define LINE 0
+#define CW   1
+#define CCW  (-1)
 
 // It divides the line into segments
 // It calculates the angle values at each of the (x, y) points
 double findTheta(int angleNumber, int i, short movementType, double beta, double beta1, double R) {
     double stepX, stepY;
 
-    if (movementType == 0) {
+    if (movementType == LINE) {
         stepX = (xCoord1 + (i * (xCoord2 - xCoord1)) / SEGMENTS);
         stepY = (yCoord1 + (i * (yCoord2 - yCoord1)) / SEGMENTS);
     } else {
@@ -35,16 +38,12 @@ double findTheta(int angleNumber, int i, short movementType, double beta, double
 }
 
 
-// MovementType defintion
-// Clockwise = 1
-// C-Clockwise = -1
-// Line = 0
 void move(std::ofstream &stepFile, short movementType) {
     double R = 0;
     double beta = 0;
     double beta1 = 0;
 
-    if (movementType != 0) {
+    if (movementType != LINE) {
         R = sqrt((iCoord - xCoord1) * (iCoord - xCoord1) + (jCoord - yCoord1) * (jCoord - yCoord1));
 
         double addPi1 = (xCoord1 - iCoord > 0) ? 0 : M_PI;
@@ -52,11 +51,9 @@ void move(std::ofstream &stepFile, short movementType) {
 
         beta1 = addPi1 + atan((jCoord - yCoord1) / (iCoord - xCoord1));
         double beta2 = addPi2 + atan((jCoord - yCoord2) / (iCoord - xCoord2));
-
         beta = beta2 - beta1;
 
-
-        if (movementType == 1) {
+        if (movementType == CW) {
             if (beta > 0) {
                 beta -= 2.0 * M_PI;
             }

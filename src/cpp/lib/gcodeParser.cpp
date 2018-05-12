@@ -15,6 +15,7 @@
 #define LINE 0
 #define CW   1
 #define CCW  (-1)
+#define SCALE 10.0
 
 std::mutex m1, m2, m3, m4;
 //double xCoord, yCoord, iCoord, jCoord;
@@ -28,25 +29,25 @@ void readXYIJ(std::string command, char variable) {
     switch (variable) {
         case 'X':
             m1.lock();
-            xCoord2 = std::stod(command.substr(start, length));
+            xCoord2 = SCALE * std::stod(command.substr(start, length));
             m1.unlock();
             return;
 
         case 'Y':
             m2.lock();
-            yCoord2 = std::stod(command.substr(start, length));
+            yCoord2 = SCALE * std::stod(command.substr(start, length));
             m2.unlock();
             return;
 
         case 'I':
             m3.lock();
-            iCoord = std::stod(command.substr(start, length));
+            iCoord = SCALE * std::stod(command.substr(start, length));
             m3.unlock();
             return;
 
         case 'J':
             m4.lock();
-            jCoord = std::stod(command.substr(start, length));
+            jCoord = SCALE * std::stod(command.substr(start, length));
             m4.unlock();
             return;
     }
