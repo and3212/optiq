@@ -5,19 +5,23 @@
 #include <string>
 
 // Global variable initialization
+
 unsigned const int SEGMENTS = 60;
+const double SCALE = 40.0;
 double remainder1 = 0;
 double remainder2 = 0;
 double angle1 = 0;
 double angle2 = 0;
-double xCoord1 = 12;
-double yCoord1 = 0;
-double xCoord2 = 0;
-double yCoord2 = 0;
-double iCoord = 0;
-double jCoord = 0;
-unsigned const int LENGTH1 = 240;
-unsigned const int LENGTH2 = 240;
+double xCoord1 =12 * SCALE;
+double yCoord1 = 0 * SCALE;
+double xCoord2 = 0 * SCALE;
+double yCoord2 = 0 * SCALE;
+double iCoord = 0 * SCALE;
+double jCoord = 0 * SCALE;
+int laserIntensity = 0;
+bool laserEnabled = false;
+unsigned const int LENGTH1 = 6 * SCALE;
+unsigned const int LENGTH2 = 6 * SCALE;
 unsigned const int LENGTH1_SQUARED = LENGTH1 * LENGTH1;
 unsigned const int LENGTH2_SQUARED = LENGTH2 * LENGTH2;
 const double MOTORSTEP = (0.5) * M_PI / 180.0;    //TODO CHANGE ME IDIOTS
@@ -30,11 +34,12 @@ int main() {
 
     // Converts the .gcode file to a custom formatted "step file"
     convert();
+    system("../../scripts/removeNewLine.sh");
 
-    //clean();
+    clean();
 
-    //run();
-
+    system("../../scripts/stepToCSV.sh");
+    system("../../scripts/process.sh");
 
     return 0;
 }

@@ -21,6 +21,10 @@ extern double xCoord2;
 extern double yCoord2;
 extern double iCoord;
 extern double jCoord;
+extern int laserIntensity;
+extern bool laserEnabled;
+
+extern const double SCALE;
 
 extern unsigned const int LENGTH1;
 extern unsigned const int LENGTH2;

@@ -1,3 +1,6 @@
 #!/bin/bash
 
-sed 's/ \+/,/g' ../cpp/res/step.txt > ../cpp/res/gcode.csv
+TEXTFILE="../res/step.txt"
+CSVFILE="../res/gcode.csv"
+
+sed 's/ \+/,/g' $TEXTFILE > $CSVFILE
