@@ -5,15 +5,19 @@
 #ifndef CONVERTER_MOVE_HPP
 #define CONVERTER_MOVE_HPP
 
-void findThetaLine(bool lineOne, unsigned short NAMECHANGE);
+#include <fstream>
 
-void movePoint(double xCoord, double yCoord);
+double findTheta(int angleNumber, int i, bool isLine, double beta, double beta1, double R);
 
-void moveLine(double xCoord, double yCoord);
+void move(std::ofstream &stepFile, short movementType);
 
-void moveArc(double xCoord, double yCoord, double iCoord, double jCoord, bool clockwise);
-
-void movePause();
+//void movePoint(double xCoord, double yCoord);
+//
+//void moveLine(std::ofstream &stepFile);
+//
+//void moveArc(std::ofstream &stepFile, bool clockwise);
+//
+//void movePause();
 
 
 #endif //CONVERTER_MOVE_HPP

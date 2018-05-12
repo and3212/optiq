@@ -1,10 +1,12 @@
 # JetBrains config folder
 src/cpp/.idea
+src/avrC/.idea
 
 # CMake builds from CLion
 src/cpp/cmake-build-debug/
 src/cpp/cmake-build-release/
 src/cpp/build
+src/avrC/cmake-build-debug/
 
 # AVR-C platformio files
 src/avrC/.pioenvs

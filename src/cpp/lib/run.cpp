@@ -5,17 +5,18 @@
 #include <fstream>
 #include "run.hpp"
 
-// yDir - yEnable - xDir - xEnable
+// outerDir - outerEnable - innerDir - innerEnable
 // 0000 - 0x0 - Stop all motors
-// 0001 - 0x1 - Move X forwards
-// 0011 - 0x3 - Move X backwards
-// 0100 - 0x4 - Move Y forwards
-// 1100 - 0xC - Move Y backwards
-// 0101 - 0x5 - Move X and Y forwards
-// 0111 - 0x7 - Move X forwards and Y backwards
-// 1101 - 0xD - Move X backwards and Y forwards
-// 1111 - 0xF - Move X and Y backwards
+// 0001 - 0x1 - Move I forwards
+// 0011 - 0x3 - Move I backwards
+// 0100 - 0x4 - Move O forwards
+// 1100 - 0xC - Move O backwards
+// 0101 - 0x5 - Move I and O forwards
+// 0111 - 0x7 - Move I backwards and O forwards
+// 1101 - 0xD - Move I forwards and O backwards
+// 1111 - 0xF - Move I and O backwards
 
+// Special cases
 // 1010 - 0xA - Set laser intensity to next byte
 // 1011 - 0xB - Set speed to next byte
 

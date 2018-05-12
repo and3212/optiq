@@ -16,4 +16,7 @@ void updateCoords(std::string &command, bool arc);
 // Converts G-Code to custom step
 void convert();
 
+// Cleans up and optimizes the G-Code
+void clean();
+
 #endif //CONVERTER_GCODEALGORITHM_HPP
