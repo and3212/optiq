@@ -172,6 +172,7 @@ void convert() {
 void clean() {
     std::string command;
     std::ifstream stepFile (STEPFILE_PATH);
+//    std::ifstream stepFile ("../res/test.txt");
     std::ofstream temp (TEMPFILE_PATH);
     int currentCommand;
     int lastCommand = 0;
@@ -195,7 +196,7 @@ void clean() {
             continue;
         }
 
-        if (currentCommand == 0xE) {
+        else if (currentCommand == 0xE) {
             temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
             temp << "0x" << std::hex << std::uppercase << currentCommand << "\n";
             getline(stepFile, command);
@@ -205,33 +206,32 @@ void clean() {
             continue;
         }
 
-        // GOOD TO GO
-        if ((lastCommand & 0b1100) == 0b1000 || (lastCommand & 0b0011) == 0b0010) {
+        else if ((lastCommand & 0b1100) == 0b1000 || (lastCommand & 0b0011) == 0b0010) {
             temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
             lastCommand = currentCommand;
             continue;
         }
 
-        // Checks to see if current command contains any of our special cases
         else if ((currentCommand & 0b1100) == 0b1000 || (currentCommand & 0b0011) == 0b0010) {
-            temp << "0x" << std::hex << std::uppercase << lastCommand <<"\n";
+            temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
             temp << "0x" << std::hex << std::uppercase << currentCommand << "\n";
             getline(stepFile, command);
             lastCommand = std::stoi(command, nullptr, 16);
             continue;
-        } else {
-            optimizedCommand = lastCommand | currentCommand;
-
-            if ((optimizedCommand & 0b0101) == 0x5) {
-                temp << "0x" << std::hex << std::uppercase << optimizedCommand << "\n";
-                getline(stepFile, command);
-                lastCommand = std::stoi(command, nullptr, 16);
-                continue;
-            } else {
-                temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
-                lastCommand = currentCommand;
-            }
         }
+
+        optimizedCommand = (currentCommand | lastCommand);
+
+        if ((optimizedCommand & 0b0101) == 0b0101) {
+            temp << "0x" << std::hex << std::uppercase << optimizedCommand << "\n";
+            getline(stepFile, command);
+            lastCommand = std::stoi(command, nullptr, 16);
+            continue;
+        } else {
+            temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
+            lastCommand = currentCommand;
+        }
+
     }
 
 //    temp << "0x" << std::hex << std::uppercase << currentCommand << "\n";
