@@ -51,7 +51,7 @@ int main() {
     //clean();
 
     // Runs the processing simulation
-    system(("../../scripts/process.sh " + std::to_string(MOTORSTEP) + " " + std::to_string(PROCESSING_SPEED)).c_str());
+    system(("../../scripts/simulate.sh " + std::to_string(MOTORSTEP) + " " + std::to_string(PROCESSING_SPEED)).c_str());
 
     return 0;
 }
