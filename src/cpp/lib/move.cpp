@@ -1,6 +1,12 @@
+//-----------------------------------------------------------------------------
+// File Name    : move.cpp
+// Description  : Calculates whether the stepper motors should move forwards or backwards
+// Author       : Liam Lawrence and Elijah Hodges
+// Created      : April 30, 2018
 //
-// Created by liam on 4/30/18.
-//
+// Version      : 1.0
+// Last Updated : May 13, 2018
+//-----------------------------------------------------------------------------
 
 #include "move.hpp"
 #include "globals.h"
@@ -24,7 +30,7 @@ double findTheta(int angleNumber, int i, short movementType, double beta, double
         stepY = jCoord + R * sin(beta1 + ((i * beta) / SEGMENTS));
     }
 
-    // TODO Make denominator a constant
+    // TODO Make denominator a constant(?)
     double angle2 = acos((stepX * stepX + stepY * stepY - (LENGTH1_SQUARED) - (LENGTH2_SQUARED)) / (2.0 * LENGTH1 * LENGTH2));
 
     if (angleNumber == 2)
@@ -149,96 +155,4 @@ void move(std::ofstream &stepFile, short movementType) {
         theta1Initial = theta1Final;
         theta2Initial = theta2Final;
     }
-
-
 }
-
-
-//// TODO Test if I am passing references properly
-//void moveLine(std::ofstream &stepFile) {
-//    // Sets up the initial theta values and remainders
-//    double theta1Initial = findThetaLine(1, 0);
-//    double theta2Initial = findThetaLine(2, 0);
-//    double deltaTheta1, deltaTheta2;
-//    double theta1Final, theta2Final;
-//
-//    double numSteps1, numSteps2;
-//    int direction1, direction2;
-//
-//    double slopeRemainder;
-//    double slopeStepCount;
-//
-//    // Finds what the next (x, y) the thetas are for that point
-//    for (int i = 0; i < SEGMENTS; i++) {
-//        slopeRemainder = 0;
-//        theta1Final = findThetaLine(1, i+1);
-//        theta2Final = findThetaLine(2, i+1);
-//
-//        deltaTheta1 = theta1Final - theta1Initial;
-//        deltaTheta2 = theta2Final - theta2Initial;
-//
-//
-//        // Determines the sign of the movement
-//        // TODO change this eventually to ANDing the sign bit 0xXX
-//        direction1 = (deltaTheta1 > 0) ? 1 : -1;
-//        direction2 = (deltaTheta2 > 0) ? 1 : -1;
-//
-//
-//        // Sets the number of steps in each "mini segment"
-//        //
-//        // Steps can only be integers, so store the decimals
-//        // as remainderX and add that onto the next step
-//        numSteps1 = (deltaTheta1 / MOTORSTEP) + remainder1;
-//        numSteps2 = (deltaTheta2 / MOTORSTEP) + remainder2;
-//
-//        // Calculates the new remainder
-//        remainder1 = numSteps1 - (int)numSteps1;
-//        remainder2 = numSteps2 - (int)numSteps2;
-//
-//        numSteps1 = std::abs((int)numSteps1);
-//        numSteps2 = std::abs((int)numSteps2);
-//
-//        if (numSteps1 != 0) {
-//            for (int j = 0; j < numSteps1; j++) {
-//                angle1 += direction1 * MOTORSTEP;
-//
-//                // Outputs to our step file
-//                if (direction1 > 0)
-//                    stepFile << "0x1\n";
-//                else
-//                    stepFile << "0x3\n";
-//
-//
-//                // Calculates the "slope" movements of the line
-//                slopeStepCount = (numSteps2 / numSteps1) + slopeRemainder;
-//                slopeRemainder = slopeStepCount - (int)slopeStepCount;
-//                slopeStepCount = (j != numSteps1-1) ? (int)slopeStepCount : std::round(slopeStepCount);
-//
-//                // Moves the outer arm
-//                for (int k = 0; k < slopeStepCount; k++) {
-//                    angle2 += direction2 * MOTORSTEP;
-//
-//                    // Outputs to our step file
-//                    if (direction2 > 0)
-//                        stepFile << "0x4\n";
-//                    else
-//                        stepFile << "0xC\n";
-//                }
-//            }
-//        } else {
-//            // Used if the inner arm doesn't have to move
-//            for (int k = 0; k < numSteps2; k++) {
-//                angle2 += direction2 * MOTORSTEP;
-//
-//                // Outputs to our step file
-//                if (direction2 > 0)
-//                    stepFile << "0x4\n";
-//                else
-//                    stepFile << "0xC\n";
-//            }
-//        }
-//
-//        theta1Initial = theta1Final;
-//        theta2Initial = theta2Final;
-//    }
-//}

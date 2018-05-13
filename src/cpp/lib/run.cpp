@@ -1,6 +1,12 @@
+//-----------------------------------------------------------------------------
+// File Name    : run.cpp
+// Description  : Communicates with MCU over serial and sends it instructions
+// Author       : Liam Lawrence
+// Created      : April 30, 2018
 //
-// Created by liam on 4/27/18.
-//
+// Version      : 1.0
+// Last Updated : n/a
+//-----------------------------------------------------------------------------
 
 #include <fstream>
 #include "run.hpp"
