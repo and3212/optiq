@@ -24,7 +24,7 @@ unsigned const int LENGTH1 = 6 * SCALE;
 unsigned const int LENGTH2 = 6 * SCALE;
 unsigned const int LENGTH1_SQUARED = LENGTH1 * LENGTH1;
 unsigned const int LENGTH2_SQUARED = LENGTH2 * LENGTH2;
-const double MOTORSTEP = (0.5) * M_PI / 180.0;    //TODO CHANGE ME IDIOTS
+const double MOTORSTEP = (0.25) * M_PI / 180.0;    //TODO CHANGE ME IDIOTS
 
 const std::string STEPFILE_PATH = "../res/step.txt";
 const std::string GCODEFILE_PATH = "../res/design.gcode";
@@ -36,7 +36,7 @@ int main() {
     convert();
     system("../../scripts/removeNewLine.sh");
 
-    clean();
+//    clean();
 
     system("../../scripts/stepToCSV.sh");
     system("../../scripts/process.sh");

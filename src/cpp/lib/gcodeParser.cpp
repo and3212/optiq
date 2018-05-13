@@ -169,77 +169,78 @@ void convert() {
 // 1110 - 0xE - Set laser intensity to the next byte
 // 0010 - 0x2 - Set speed to the next byte
 
-void clean() {
-    std::string command;
-    std::ifstream stepFile (STEPFILE_PATH);
-//    std::ifstream stepFile ("../res/test.txt");
-    std::ofstream temp (TEMPFILE_PATH);
-    int currentCommand;
-    int lastCommand = 0;
-    bool firstLoop = true;
-    int optimizedCommand;
+ void clean() {
+     std::string command;
+     std::ifstream stepFile (STEPFILE_PATH);
+ //    std::ifstream stepFile ("../res/test.txt");
+     std::ofstream temp (TEMPFILE_PATH);
+     int currentCommand;
+     int lastCommand = 0;
+     bool firstLoop = true;
+     int optimizedCommand;
 
-    while(getline(stepFile, command)) {
-        if (firstLoop) {
-            lastCommand = std::stoi(command, nullptr, 16);
-            firstLoop = false;
-            continue;
-        }
+     while(stepFile >> std::ws && getline(stepFile, command)) {
+         if (firstLoop) {
+             lastCommand = std::stoi(command, nullptr, 16);
+             firstLoop = false;
+             continue;
+         }
 
-        currentCommand = std::stoi(command, nullptr, 16);
+         currentCommand = std::stoi(command, nullptr, 16);
 
-        if (lastCommand == 0xE) {
-            temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
-            temp << "0x" << std::hex << std::uppercase << currentCommand << "\n";
-            getline(stepFile, command);
-            lastCommand = std::stoi(command, nullptr, 16);
-            continue;
-        }
+         if (lastCommand == 0xE) {
+             temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
+             temp << "0x" << std::hex << std::uppercase << currentCommand << "\n";
+             getline(stepFile, command);
+             lastCommand = std::stoi(command, nullptr, 16);
+             continue;
+         }
 
-        else if (currentCommand == 0xE) {
-            temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
-            temp << "0x" << std::hex << std::uppercase << currentCommand << "\n";
-            getline(stepFile, command);
-            temp << command << "\n";
-            getline(stepFile, command);
-            lastCommand = std::stoi(command, nullptr, 16);
-            continue;
-        }
+         if (currentCommand == 0xE) {
+             temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
+             temp << "0x" << std::hex << std::uppercase << currentCommand << "\n";
+             getline(stepFile, command);
+             temp << command << "\n";
+             getline(stepFile, command);
+             lastCommand = std::stoi(command, nullptr, 16);
+             continue;
+         }
 
-        else if ((lastCommand & 0b1100) == 0b1000 || (lastCommand & 0b0011) == 0b0010) {
-            temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
-            lastCommand = currentCommand;
-            continue;
-        }
+         // GOOD TO GO
+         if ((lastCommand & 0b1100) == 0b1000 || (lastCommand & 0b0011) == 0b0010) {
+             temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
+             lastCommand = currentCommand;
+             continue;
+         }
 
-        else if ((currentCommand & 0b1100) == 0b1000 || (currentCommand & 0b0011) == 0b0010) {
-            temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
-            temp << "0x" << std::hex << std::uppercase << currentCommand << "\n";
-            getline(stepFile, command);
-            lastCommand = std::stoi(command, nullptr, 16);
-            continue;
-        }
+         // Checks to see if current command contains any of our special cases
+         else if ((currentCommand & 0b1100) == 0b1000 || (currentCommand & 0b0011) == 0b0010) {
+             temp << "0x" << std::hex << std::uppercase << lastCommand <<"\n";
+             temp << "0x" << std::hex << std::uppercase << currentCommand << "\n";
+             getline(stepFile, command);
+             lastCommand = std::stoi(command, nullptr, 16);
+             continue;
+         } else {
+             optimizedCommand = (lastCommand | currentCommand);
 
-        optimizedCommand = (currentCommand | lastCommand);
+             if ((optimizedCommand & 0b0101) == 0b0101) {
+                 temp << "0x" << std::hex << std::uppercase << optimizedCommand << "\n";
+                 getline(stepFile, command);
+                 lastCommand = std::stoi(command, nullptr, 16);
+                 continue;
+             } else {
+                 temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
+                 lastCommand = currentCommand;
+             }
+         }
+     }
 
-        if ((optimizedCommand & 0b0101) == 0b0101) {
-            temp << "0x" << std::hex << std::uppercase << optimizedCommand << "\n";
-            getline(stepFile, command);
-            lastCommand = std::stoi(command, nullptr, 16);
-            continue;
-        } else {
-            temp << "0x" << std::hex << std::uppercase << lastCommand << "\n";
-            lastCommand = currentCommand;
-        }
-
-    }
-
-//    temp << "0x" << std::hex << std::uppercase << currentCommand << "\n";
+     temp << "0x" << std::hex << std::uppercase << currentCommand << "\n";
 
 
-    stepFile.close();
-    temp.close();
+     stepFile.close();
+     temp.close();
 
-    std::remove(STEPFILE_PATH.c_str());
-    std::rename(TEMPFILE_PATH.c_str(), STEPFILE_PATH.c_str());
-}
+     std::remove(STEPFILE_PATH.c_str());
+     std::rename(TEMPFILE_PATH.c_str(), STEPFILE_PATH.c_str());
+ }
