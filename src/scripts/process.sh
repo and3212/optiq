@@ -1,3 +1,6 @@
 #!/bin/bash
 
-processing-java --sketch=/home/liam/projects/scaraArm/src/processing/simulation --output=/home/liam/projects/scaraArm/src/processing/simulation/build --force --run
+SKETCHFOLDER="../../processing/simulation"
+BUILDFOLDER="$SKETCHFOLDER/build"
+
+processing-java --sketch=$SKETCHFOLDER --output=$BUILDFOLDER --force --run
